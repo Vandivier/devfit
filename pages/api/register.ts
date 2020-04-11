@@ -28,7 +28,9 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
   }
 
   const { username, password, tagIds, newTags } = req.body;
-
+  // console.log("body: ", typeof req.body);
+  // console.log("body2: ", JSON.parse(req.body));
+  // console.log("username: ", req.body.username);
   if (await prisma.user.findOne({ where: { username } })) {
     res.status(400).json({ error: "username already exists" });
     return;
@@ -40,12 +42,12 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
     data: {
       username,
       password: hashedPassword,
-      tags: {
-        connect: tagIds.map((id: string) => ({
-          id,
-        })),
-        create: newTags.map((tag: Tag) => tag),
-      },
+      // tags: {
+      //   connect: tagIds.map((id: string) => ({
+      //     id,
+      //   })),
+      //   create: newTags.map((tag: Tag) => tag),
+      // },
     },
   });
 

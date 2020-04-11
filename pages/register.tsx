@@ -1,6 +1,6 @@
-import { NextPage } from "next";
-import MainLayout from "../components/MainLayout";
-import { RegisterPage } from "../components/Register/RegisterPage";
+import { NextPage } from 'next';
+import MainLayout from '../components/MainLayout';
+import { RegisterPage } from '../components/Register/RegisterPage';
 
 type RegisterProps = {};
 

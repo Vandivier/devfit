@@ -1,6 +1,6 @@
-import { NextPage } from "next";
-import MainLayout from "../components/MainLayout";
-import { LoginPage } from "../components/Login/LoginPage";
+import { NextPage } from 'next';
+import MainLayout from '../components/MainLayout';
+import { LoginPage } from '../components/Login/LoginPage';
 
 type HomeProps = {};
 

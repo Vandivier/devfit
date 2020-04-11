@@ -1,6 +1,4 @@
-import Head from "next/head";
-
-import { Menu } from "../components/Menu";
+import Head from 'next/head';
 
 type DefaultHeadProps = {};
 
