@@ -1,0 +1,33 @@
+datasource postgresql {
+  url = "***"
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// model Song {
+// id       Int     @default(autoincrement()) @id
+// name     String
+// artist   Artist? @relation(fields: [artistId], references: [id])
+// artistId Int?
+// }
+model User {
+  id Int @default(autoincrement()) @id
+}
+
+model Challenge {
+  id             Int    @default(autoincrement()) @id
+  basePointValue Int
+  maxPoints      Int
+  name           String
+  posts          Post[]
+}
+
+model Post {
+  id          Int       @default(autoincrement()) @id
+  caption     String    @unique
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId Int
+}

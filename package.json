@@ -5,18 +5,34 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "db": "prisma studio --experimental",
+    "db-save": "prisma migrate save --experimental",
+    "db-up": "prisma migrate up --experimental",
+    "update": "prisma generate",
+    "go": "npm run db-save && npm run db-up && npm run update"
   },
   "dependencies": {
+    "@prisma/client": "^2.0.0-beta.2",
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.4.0",
+    "next": "^9.3.3",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "yup": "^0.28.3"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.0.0-beta.2",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie": "^0.3.3",
+    "@types/node": "^13.11.1",
+    "@types/yup": "^0.26.35",
+    "typescript": "^3.8.3",
     "@emotion/core": "~10.0.28",
     "next": "~9.3.3",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
-    "semantic-ui-react": "~0.88.2"
-  },
-  "devDependencies": {
-    "@types/node": "~13.11.1",
-    "@types/react": "~16.9.34",
-    "typescript": "~3.8.3"
+    "semantic-ui-react": "~0.88.2",
+    "@types/react": "~16.9.34"
   }
 }
