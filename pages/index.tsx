@@ -1,17 +1,13 @@
 import { NextPage } from 'next';
-import DefaultHead from '../Components/DefaultHead';
-
-import { Menu } from '../Components/Menu';
+import MainLayout from '../Components/MainLayout';
+import { HomePage } from '../Components/Home/HomePage';
 
 type HomeProps = {}
 
 const Home: NextPage<HomeProps> = () => (
-	<div>
-		<DefaultHead />
-
-		<Menu />
-		<h1>HomePage123</h1>
-	</div>
+	<MainLayout>
+		<HomePage />
+	</MainLayout>
 );
   
 export default Home;
