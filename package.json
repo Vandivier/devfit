@@ -1,5 +1,5 @@
 {
-  "name": "nextjs",
+  "name": "devfit-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,6 +27,12 @@
     "@types/cookie": "^0.3.3",
     "@types/node": "^13.11.1",
     "@types/yup": "^0.26.35",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "@emotion/core": "~10.0.28",
+    "next": "~9.3.3",
+    "react": "~16.13.0",
+    "react-dom": "~16.13.0",
+    "semantic-ui-react": "~0.88.2",
+    "@types/react": "~16.9.34"
   }
 }
