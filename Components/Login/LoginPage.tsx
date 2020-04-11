@@ -27,7 +27,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
         }
     }
 
-    const handleLoginSubmit = (e: any) => {
+    const handleLoginSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
         setButtonLoading(true);
         setErrorMessage(undefined);
