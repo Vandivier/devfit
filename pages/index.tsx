@@ -1,16 +1,13 @@
-// import { NextPage } from "next";
-// import Head from "next/head";
+// import { NextPage } from 'next';
+// import MainLayout from '../Components/MainLayout';
+// import { HomePage } from '../Components/Home/HomePage';
 
-// type HomeProps = {};
+// type HomeProps = {}
 
 // const Home: NextPage<HomeProps> = () => (
-//   <div>
-//     <Head>
-//       <title>DevFit</title>
-//     </Head>
-
-//     <h1>asdf</h1>
-//   </div>
+// 	<MainLayout>
+// 		<HomePage />
+// 	</MainLayout>
 // );
 
 // export default Home;
