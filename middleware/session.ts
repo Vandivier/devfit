@@ -5,7 +5,7 @@ const cookieName = "qid";
 
 export const session = (
   handler: (req: NextApiRequest, res: NextApiResponse, x: any) => Promise<void>
-) => (req, res) => {
+) => (req: NextApiRequest, res: NextApiResponse) => {
   return handler(req, res, {
     getUserId: () => {
       return req.cookies.userId;
