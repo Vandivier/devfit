@@ -15,10 +15,7 @@ const schema = yup.object().shape({
   ),
 });
 
-const handler: SessionHandler = async (req, res, {}) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "bad" });
-  }
+const handler: SessionHandler = async (req, res, { setUserId }) => {
   const prisma = createPrismaClient();
 
   try {
@@ -26,17 +23,19 @@ const handler: SessionHandler = async (req, res, {}) => {
   } catch (err) {
     console.log(err);
     res.status(400).json({ error: "invalid input" });
+    return;
   }
 
   const { username, password, tagIds, newTags } = req.body;
 
   if (await prisma.user.findOne({ where: { username } })) {
     res.status(400).json({ error: "username already exists" });
+    return;
   }
 
   const hashedPassword = await hash(password, 8);
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       username,
       password: hashedPassword,
@@ -49,7 +48,9 @@ const handler: SessionHandler = async (req, res, {}) => {
     },
   });
 
-  // @todo login
+  setUserId(user.id);
+
+  res.status(200).json({ ok: true, user });
 };
 
 export default session(handler);
