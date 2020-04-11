@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.28",
     "next": "~9.3.3",
     "react": "~16.13.0",
-    "react-dom": "~16.13.0"
+    "react-dom": "~16.13.0",
+    "semantic-ui-react": "^0.88.2"
   },
   "devDependencies": {
     "@types/node": "^13.11.1",
