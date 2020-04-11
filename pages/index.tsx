@@ -1,16 +1,17 @@
 import { NextPage } from 'next';
-import Head from 'next/head'
+import DefaultHead from '../Components/DefaultHead';
+
+import { Menu } from '../Components/Menu';
 
 type HomeProps = {}
 
 const Home: NextPage<HomeProps> = () => (
 	<div>
-		<Head>
-			<title>DevFit</title>
-		</Head>
+		<DefaultHead />
 
-		<h1>HomePage</h1>
+		<Menu />
+		<h1>HomePage123</h1>
 	</div>
 );
   
-export default Home
+export default Home;
