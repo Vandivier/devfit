@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
-import MainLayout from '../Components/MainLayout';
-import { LeaderboardPage } from '../Components/Leaderboard/LeaderboardPage';
+import MainLayout from '../components/MainLayout';
+import { LeaderboardPage } from '../components/Leaderboard/LeaderboardPage';
 
 type HomeProps = {}
 
