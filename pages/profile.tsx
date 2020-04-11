@@ -1,13 +1,13 @@
-import { NextPage } from 'next';
-import MainLayout from '../Components/MainLayout';
-import { ProfilePage } from '../Components/Profile/ProfilePage';
+import { NextPage } from "next";
+import MainLayout from "../components/MainLayout";
+import { ProfilePage } from "../components/Profile/ProfilePage";
 
-type ProfileProps = {}
+type ProfileProps = {};
 
 const Profile: NextPage<ProfileProps> = () => (
-	<MainLayout>
-		<ProfilePage />
-	</MainLayout>
+  <MainLayout>
+    <ProfilePage />
+  </MainLayout>
 );
-  
+
 export default Profile;

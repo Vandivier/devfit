@@ -1,13 +1,13 @@
-import { NextPage } from 'next';
-import MainLayout from '../Components/MainLayout';
-import { LeaderboardPage } from '../Components/Leaderboard/LeaderboardPage';
+import { NextPage } from "next";
+import MainLayout from "../components/MainLayout";
+import { LeaderboardPage } from "../components/Leaderboard/LeaderboardPage";
 
-type HomeProps = {}
+type HomeProps = {};
 
 const Leaderboard: NextPage<HomeProps> = () => (
-	<MainLayout>
-		<LeaderboardPage />
-	</MainLayout>
+  <MainLayout>
+    <LeaderboardPage />
+  </MainLayout>
 );
-  
+
 export default Leaderboard;

@@ -2,6 +2,7 @@ import "./cssreset.css";
 
 import React from "react";
 import App, { Container } from "next/app";
+// @ts-ignore
 import Modal from "react-modal";
 import { ApolloProvider } from "react-apollo-hooks";
 import withApolloClient from "../lib/with-apollo-client";

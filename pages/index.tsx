@@ -1,6 +1,6 @@
 // import { NextPage } from 'next';
-// import MainLayout from '../Components/MainLayout';
-// import { HomePage } from '../Components/Home/HomePage';
+// import MainLayout from '../components/MainLayout';
+// import { HomePage } from '../components/Home/HomePage';
 
 // type HomeProps = {}
 
