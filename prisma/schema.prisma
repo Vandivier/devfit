@@ -1,6 +1,7 @@
 datasource postgresql {
-  url      = env("DATABASE_URL")
-  provider = "postgresql"
+  url           = env("DATABASE_URL")
+  provider      = "postgresql"
+  binaryTargets = ["native", "darwin"]
 }
 
 generator client {
