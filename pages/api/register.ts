@@ -1,6 +1,7 @@
 import { createPrismaClient } from "../../utils/createPrismaClient";
 import { hash } from "bcryptjs";
 import * as yup from "yup";
+ // @ts-ignore
 import { Tag } from "@prisma/client";
 import { session, SessionHandler } from "../../middleware/session";
 
