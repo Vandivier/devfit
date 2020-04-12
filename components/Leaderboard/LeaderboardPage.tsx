@@ -1,5 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Container, Loader, Feed } from 'semantic-ui-react';
+import { Container, Loader, Feed, Button } from 'semantic-ui-react';
+import { useRouter } from 'next/router';
+import { useAuthenticated } from '../useAuthenticated';
 
 export type UserPoints = {
     id: string;
@@ -14,6 +16,9 @@ type LeaderboardPageProps = {
 export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
     const [leaderboardItemsData, setLeaderboardItemsData] = useState<UserPoints[] | undefined>(undefined);
 
+    const { isAuthenticated } = useAuthenticated();
+    const router = useRouter();
+
     useEffect(() => {
         setLeaderboardItemsData(data);
     }, [data]);
@@ -21,6 +26,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>Leaderboard Page</h1>
+
+            { isAuthenticated ? 
+                <Button onClick={() => router.push('/feed')} fluid primary>Complete Your Next Challenge</Button>
+            :
+                <Button onClick={() => router.push('/register')} fluid primary>Get Started</Button>
+            }
 
             {!leaderboardItemsData && (
                 <div>

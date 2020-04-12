@@ -11,6 +11,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 		parentDiv: {
 			minHeight: '100vh',
 			maxWidth: '100vw'
+		},
+		childDiv: {
+			padding: '0 10px'
 		}
 	}
 
@@ -19,7 +22,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 			<DefaultHead />
 			<Menu />
 
-			{children}
+			<div css={mainLayoutStyles.childDiv}>
+				{children}
+			</div>
 		</div>		
 	)
 };
