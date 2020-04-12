@@ -1,7 +1,6 @@
 import { createPrismaClient } from "../../utils/createPrismaClient";
 import { hash } from "bcryptjs";
 import * as yup from "yup";
-import { Tag } from "@prisma/client";
 import { session, SessionHandler } from "../../middleware/session";
 
 const schema = yup.object().shape({
@@ -15,9 +14,8 @@ const schema = yup.object().shape({
   ),
 });
 
+const prisma = createPrismaClient();
 const handler: SessionHandler = async (req, res, { setUserId }) => {
-  const prisma = createPrismaClient();
-
   try {
     await schema.validate(req.body);
   } catch (err) {

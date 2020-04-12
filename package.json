@@ -10,7 +10,8 @@
     "db-save": "prisma migrate save --experimental",
     "db-up": "prisma migrate up --experimental",
     "update": "prisma generate",
-    "go": "npm run db-save && npm run db-up && npm run update"
+    "go": "npm run db-save && npm run db-up && npm run update",
+    "postinstall": "npm run update"
   },
   "dependencies": {
     "@prisma/client": "^2.0.0-beta.2",
