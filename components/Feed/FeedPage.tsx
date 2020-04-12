@@ -13,14 +13,8 @@ export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
         <div>
             <h1 style={{ textAlign: 'center' }}>Global Feed</h1>
             <NewChallenge />
-
-            <Segment>
-                {data.length < 1 ?
-                    <p style={{textAlign: 'center'}}>No feed items to show.</p>
-                :
-                    <PostsFeed data={data} />
-                }
-            </Segment>
+            <CloudinaryUpload />
+            <Segment>{data.length < 1 ? <p style={{ textAlign: 'center' }}>No feed items to show.</p> : <PostsFeed data={data} />}</Segment>
         </div>
     );
 };
