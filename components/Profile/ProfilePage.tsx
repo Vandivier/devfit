@@ -8,6 +8,7 @@ import { User, Post, UserGetPayload } from '@prisma/client';
 
 import { Card, Icon, Image, Feed, Segment, Modal, Message } from 'semantic-ui-react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
+import { format } from 'date-fns';
 
 type ProfilePageProps = {};
 
@@ -85,26 +86,37 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
     return (
         <Feed>
             {posts.map((post: Post) => (
-                <Feed.Event key={post.id}>
+                <Feed.Event key={'' + post.id}>
                     <Feed.Content>
                         <Feed.Summary>
-                            Challenge completed: {post.challengeId}
-                            <Feed.Date>{post.createdAt}</Feed.Date>
+                            Challenge completed <Feed.Date>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</Feed.Date>
+                            {post.videoUrl && <Image src={post.videoUrl} size="small" />}
                         </Feed.Summary>
 
-                        {post.videoUrl && (
-                            <Feed.Extra text>
-                                {post.videoUrl}
-                                {post.caption}
-                            </Feed.Extra>
-                        )}
-
-                        <Feed.Meta>
-                            {/* TODO: Replace with actual number of likes */}
-                            14 likes
-                        </Feed.Meta>
+                        {post.caption && <Feed.Extra text>{post.caption}</Feed.Extra>}
                     </Feed.Content>
                 </Feed.Event>
+
+                // <Feed.Event key={post.id}>
+                //     <Feed.Content>
+                //         <Feed.Summary>
+                //             Challenge completed: {post.challengeId}
+                //             <Feed.Date>{post.createdAt}</Feed.Date>
+                //         </Feed.Summary>
+
+                //         {post.videoUrl && (
+                //             <Feed.Extra text>
+                //                 {post.videoUrl}
+                //                 {post.caption}
+                //             </Feed.Extra>
+                //         )}
+
+                //         <Feed.Meta>
+                //             {/* TODO: Replace with actual number of likes */}
+                //             14 likes
+                //         </Feed.Meta>
+                //     </Feed.Content>
+                // </Feed.Event>
             ))}
         </Feed>
     );
