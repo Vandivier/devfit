@@ -12,7 +12,7 @@ import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 type ProfilePageProps = {};
 
 export const ProfilePage: React.FC<ProfilePageProps> = () => {
-    const { data, loading } = useGetter<{ user: User }>('/me');
+    const { data, loading } = useGetter<{ user: User & { points: number } }>('/me');
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ErrorMessage | undefined>(undefined);
 
@@ -48,7 +48,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
                 </Modal.Content>
             </Modal>
 
-            <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
+            <Segment style={{ width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center' }}>
                 <Card>
                     {/* TODO: Attach user profile picture to image */}
                     {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
@@ -57,7 +57,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
                     <Card.Content>
                         <Card.Header>{data?.user.username}</Card.Header>
                         {/* TODO: Add actual rank */}
-                        <Card.Meta>Rank 31313</Card.Meta>
+                        <Card.Meta>Points {data?.user.points}</Card.Meta>
                     </Card.Content>
 
                     <Card.Content extra>
