@@ -1,0 +1,10 @@
+{
+    "env": {
+        "DATABASE_URL": "@db-url"
+    },
+    "build": {
+        "env": {
+            "DATABASE_URL": "@db-url"
+        }
+    }
+}
