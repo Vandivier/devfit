@@ -179,7 +179,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
                         </Form.Field>
 
                         <Form.Field>
-                            <label>Video/Image validation</label>
+                            <label>Image validation</label>
                             <CloudinaryUpload
                                 onUpload={(image) => setUserInput({ ...userInput, proof: { type: image.resource_type, link: image.url } })}
                             />
