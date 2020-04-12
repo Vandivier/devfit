@@ -10,7 +10,12 @@ const handler: SessionHandler = async (req, res, { getUserId }) => {
         });
         return;
     }
-    const pUser = prisma.user.findOne({ where: { id: getUserId() } });
+    const pUser = prisma.user.findOne({
+        where: { id: getUserId() },
+        include: {
+            posts: true,
+        },
+    });
     const pp = prisma.raw(`
     select sum(C."basePointValue") points from "User" u
    inner join "Post" P on U.id = P."userId"
