@@ -5,7 +5,11 @@ import { format } from 'date-fns';
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
 import { PostWithStuff } from '../../utils/PostWithStuff';
+<<<<<<< HEAD
 import { useGetter } from '../../real-components/useGetter';
+=======
+import { useRouter } from 'next/router';
+>>>>>>> 6c718ca9189319b9f7814a9e27a8ee585e120960
 
 type FeedPageProps = {
     data: PostWithStuff[];
@@ -26,7 +30,8 @@ type PostsFeedProps = {
 };
 
 const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
-    console.log(data);
+
+    const router = useRouter();
 
     return (
         <Feed>
@@ -34,7 +39,7 @@ const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
                 <Feed.Event key={'' + post.id}>
                     <Feed.Content>
                         <Feed.Summary>
-                            Challenge completed: {post.challengeId}
+                            {post.user.username} completed: {post.challenge.name}
                             <Feed.Date>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</Feed.Date>
                             {post.videoUrl && <Image src={post.videoUrl} size="small" />}
                         </Feed.Summary>
@@ -42,8 +47,7 @@ const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
                         {post.caption && <Feed.Extra text>{post.caption}</Feed.Extra>}
 
                         <Feed.Meta>
-                            {/* TODO: Replace with actual number of likes */}
-                            14 likes
+                            <Feed.User onClick={() => router.push(`/profile/${post.user.username}`)}>Visit Profile</Feed.User>
                         </Feed.Meta>
                     </Feed.Content>
                 </Feed.Event>
