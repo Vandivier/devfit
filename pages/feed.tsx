@@ -1,11 +1,21 @@
 import MainLayout from '../components/MainLayout';
 import { createPrismaClient } from '../utils/createPrismaClient';
-import { Post } from '@prisma/client';
+import { Post, PostSelect } from '@prisma/client';
 import { FeedPage } from '../components/Feed/FeedPage';
+import { PostWithStuff } from '../utils/PostWithStuff';
 
 export async function getStaticProps() {
     const prisma = createPrismaClient();
-    const data = await prisma.post.findMany({ first: 20 });
+    const data = await prisma.post.findMany({
+        first: 20,
+        include: {
+            challenge: true,
+            user: true,
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    });
 
     return {
         props: {
@@ -14,7 +24,7 @@ export async function getStaticProps() {
     };
 }
 
-const Feed = ({ data }: { data: Post[] }) => (
+const Feed = ({ data }: { data: PostWithStuff[] }) => (
     <MainLayout>
         <FeedPage data={data} />
     </MainLayout>

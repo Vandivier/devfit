@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
-import { Post } from '@prisma/client';
 import { format } from 'date-fns';
 
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
+import { PostWithStuff } from '../../utils/PostWithStuff';
 
 type FeedPageProps = {
-    data: Post[];
+    data: PostWithStuff[];
 };
 
 export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
@@ -21,29 +21,24 @@ export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
 };
 
 type PostsFeedProps = {
-    data: Post[];
+    data: PostWithStuff[];
 };
 
 const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
-
     console.log(data);
 
     return (
         <Feed>
-            {data.map((post: Post) => (
-                <Feed.Event key={post.id}>
+            {data.map((post) => (
+                <Feed.Event key={'' + post.id}>
                     <Feed.Content>
                         <Feed.Summary>
                             Challenge completed: {post.challengeId}
                             <Feed.Date>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</Feed.Date>
-                            {post.videoUrl && <Image src={post.videoUrl} size='small' /> }
+                            {post.videoUrl && <Image src={post.videoUrl} size="small" />}
                         </Feed.Summary>
 
-
-                        {post.caption && 
-                            <Feed.Extra text>
-                                {post.caption}
-                            </Feed.Extra>}
+                        {post.caption && <Feed.Extra text>{post.caption}</Feed.Extra>}
 
                         <Feed.Meta>
                             {/* TODO: Replace with actual number of likes */}
@@ -60,7 +55,7 @@ type UserInput = {
     exercise: number | undefined;
     reps: number | undefined;
     caption?: string;
-    proof?: { type: string; link: string; };
+    proof?: { type: string; link: string };
 };
 
 const exerciseList = [
@@ -80,7 +75,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
         caption: undefined,
         proof: {
             type: undefined,
-            link: undefined
+            link: undefined,
         },
     });
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
@@ -89,7 +84,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
     const exerciseMap = {};
 
     for (const exercise of exerciseList) {
-        exerciseMap[exercise.id] = exercise.exercise
+        exerciseMap[exercise.id] = exercise.exercise;
     }
 
     const exerciseOptions = exerciseList.map((exercise, index: number) => ({ key: index, text: exercise.exercise, value: exercise.id }));
@@ -124,13 +119,12 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
                 create: {
                     basePointValue: userInput.exercise,
                     maxPoints: userInput.exercise * 10,
-                    name: exerciseMap[userInput.exercise]
-                }
-            }
-        }
-    
-        poster('/post/create', {...newChallengeSubmission})
-        .then((x) => {
+                    name: exerciseMap[userInput.exercise],
+                },
+            },
+        };
+
+        poster('/post/create', { ...newChallengeSubmission }).then((x) => {
             if (x.status === 200) {
                 setButtonLoading(false);
                 setModalOpen(false);
@@ -141,8 +135,8 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
                     content: 'something went wrong :(',
                     warning: true,
                 });
-            } 
-        })
+            }
+        });
     };
 
     return (
@@ -183,7 +177,9 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
 
                         <Form.Field>
                             <label>Video/Image validation</label>
-                            <CloudinaryUpload onUpload={(image) => setUserInput({...userInput, proof: {type: image.resource_type, link: image.url}})} />
+                            <CloudinaryUpload
+                                onUpload={(image) => setUserInput({ ...userInput, proof: { type: image.resource_type, link: image.url } })}
+                            />
                         </Form.Field>
 
                         <Button type="submit" fluid onClick={handleExerciseSubmit} loading={buttonLoading} disabled={buttonLoading}>

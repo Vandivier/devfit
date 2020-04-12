@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 import React from 'react';
 import MainLayout from '../../components/MainLayout';
@@ -10,11 +10,27 @@ import { Card, Image, Feed, Segment } from 'semantic-ui-react';
 
 export async function getStaticProps({ params: { username } }) {
     const prisma = createPrismaClient();
-    const data = await prisma.user.findOne({ where: { username } });
+    const pUser = prisma.user.findOne({
+        where: { username },
+        include: {
+            posts: true,
+        },
+    });
+    const pp = prisma.raw(`
+    select sum(C."basePointValue") points from "User" u
+   inner join "Post" P on U.id = P."userId"
+   inner join "Challenge" C on P."challengeId" = C.id
+   where u.username = '${username}'
+    `);
+    const [user, [{ points }]] = await Promise.all([pUser, pp]);
 
     return {
         props: {
-            data,
+            data: {
+                ...user,
+                posts: user.posts.map((x) => ({ ...x, createdAt: x.createdAt.toString() })),
+                points: points || 0,
+            },
         },
     };
 }
@@ -27,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 const LookupProfile: React.FC<{
-    data: User | null;
+    data: (User & { points: number; posts: Post[] }) | null;
 }> = ({ data }) => {
     const { isFallback } = useRouter();
 
@@ -37,49 +53,51 @@ const LookupProfile: React.FC<{
             display: 'flex',
             flexDirection: 'column' as 'column',
             justifyContent: 'center',
-            alignItems: 'center'
-        }
-    }
+            alignItems: 'center',
+        },
+    };
 
     if (isFallback) {
-        return <div style={{height: '100%',}}>loading...</div>;
+        return <div style={{ height: '100%' }}>loading...</div>;
     }
-    return <MainLayout>{data ? 
-        <div css={profileStyles.parentDiv}>
-            {/* {JSON.stringify(data)} */}
-            <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
-                <Card>
-                    {/* TODO: Attach user profile picture to image */}
-                    {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
-                    <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
-                    
-                    <Card.Content>
-                        <Card.Header>{data?.username}</Card.Header>
-                        {/* TODO: Add actual rank */}
-                        <Card.Meta>Rank 31313</Card.Meta>
-                    </Card.Content>
-                </Card>
+    return (
+        <MainLayout>
+            {data ? (
+                <div css={profileStyles.parentDiv}>
+                    {/* {JSON.stringify(data)} */}
+                    <Segment style={{ width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center' }}>
+                        <Card>
+                            {/* TODO: Attach user profile picture to image */}
+                            {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
+                            <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
 
-                {/* TODO: Populate a list of their posts */}
-                <ProfilePosts posts={undefined} />
-            </Segment>
-        </div> 
-    
-    : <div>could not find user</div>}</MainLayout>;
+                            <Card.Content>
+                                <Card.Header>{data?.username}</Card.Header>
+                                {/* TODO: Add actual rank */}
+                                <Card.Meta>Points {data?.points}</Card.Meta>
+                            </Card.Content>
+                        </Card>
+
+                        {/* TODO: Populate a list of their posts */}
+                        <ProfilePosts posts={data.posts} />
+                    </Segment>
+                </div>
+            ) : (
+                <div>could not find user</div>
+            )}
+        </MainLayout>
+    );
 };
 
 export default LookupProfile;
 
 type ProfilePostsProps = {
     posts: Post[];
-}
+};
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
-    
     if (!posts) {
-        return (
-            <p>No posts to show.</p>
-        );
+        return <p>No posts to show.</p>;
     }
 
     return (
@@ -91,13 +109,13 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                             Challenge completed: {post.challengeId}
                             <Feed.Date>{post.createdAt}</Feed.Date>
                         </Feed.Summary>
-                        
-                        {post.videoUrl &&
+
+                        {post.videoUrl && (
                             <Feed.Extra text>
                                 {post.videoUrl}
                                 {post.caption}
                             </Feed.Extra>
-                        }
+                        )}
 
                         <Feed.Meta>
                             {/* TODO: Replace with actual number of likes */}
@@ -106,6 +124,6 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                     </Feed.Content>
                 </Feed.Event>
             ))}
-        </Feed>  
+        </Feed>
     );
-}
+};
