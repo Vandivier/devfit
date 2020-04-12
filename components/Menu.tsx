@@ -10,7 +10,7 @@ import { Button, Icon } from 'semantic-ui-react';
 
 const menuStyles = {
     parentDiv: {
-        padding: '5px 0',
+        padding: '10px 0',
         display: 'flex',
         flexDirection: 'row' as 'row',
     },

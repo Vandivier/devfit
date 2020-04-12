@@ -25,7 +25,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
 
     return (
         <div css={profileStyles.parentDiv}>
-            <h1>Profile Page</h1>
+            <h1>Your Profile</h1>
             <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
                 <Card>
                     {/* TODO: Attach user profile picture to image */}
@@ -47,7 +47,6 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
                 {/* TODO: Populate a list of their posts */}
                 <ProfilePosts posts={undefined} />
             </Segment>
-
         </div>
     );
 };

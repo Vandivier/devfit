@@ -25,7 +25,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
 
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>Leaderboard Page</h1>
+            <h1 style={{ textAlign: 'center' }}>Global Leaderboard</h1>
 
             {isAuthenticated ? (
                 <Button onClick={() => router.push('/feed')} fluid primary>

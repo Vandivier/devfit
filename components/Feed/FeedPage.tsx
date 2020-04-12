@@ -11,7 +11,7 @@ type FeedPageProps = {
 export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>Feed Page</h1>
+            <h1 style={{ textAlign: 'center' }}>Global Feed</h1>
             <NewChallenge />
 
             <Segment>
