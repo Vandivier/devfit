@@ -31,7 +31,7 @@ type MenuProps = {}
 export const Menu: React.FC<MenuProps> = () => {
 
     const router = useRouter();
-    const { isAuthenticated } = useAuthenticated();
+    const { isAuthenticated, userDetails } = useAuthenticated();
 
     return (
         <div css={menuStyles.parentDiv}>
