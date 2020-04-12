@@ -18,7 +18,7 @@ const schema = yup.object().shape({
 const prisma = createPrismaClient();
 const handler: SessionHandler = async (req, res, { setUserId }) => {
   try {
-    await schema.validate(req.body);
+    await schema.validate(req.body, { strict: true });
   } catch (err) {
     console.log(err);
     res.status(400).json({ error: 'invalid input' });
@@ -40,12 +40,19 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
     data: {
       username,
       password: hashedPassword,
-      tags: {
-        connect: tagIds.map((id: string) => ({
-          id,
-        })),
-        create: newTags.map((tag: Tag) => tag),
-      },
+      tags:
+        !tagIds.length && !newTags.length
+          ? undefined
+          : {
+              connect: !tagIds.length
+                ? undefined
+                : tagIds.map((id: string) => ({
+                    id,
+                  })),
+              create: !newTags.length
+                ? undefined
+                : newTags.map((tag: Tag) => tag),
+            },
     },
   });
 
