@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Container, Loader, Feed, Button } from 'semantic-ui-react';
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 import { useAuthenticated } from '../useAuthenticated';
 
 export type UserPoints = {
@@ -63,6 +63,8 @@ type LeaderboardItemProps = {
 const LeaderboardItemComp: React.FC<LeaderboardItemProps> = ({ leaderboardItem }) => {
     const { username, points } = leaderboardItem;
 
+    const router = useRouter();
+
     return (
         <Feed.Event>
             <Feed.Label icon="user secret" style={{ display: 'flex', alignItems: 'center' }} />
@@ -72,7 +74,7 @@ const LeaderboardItemComp: React.FC<LeaderboardItemProps> = ({ leaderboardItem }
                     <Feed.Date>{points} Points</Feed.Date>
                 </Feed.Summary>
                 <Feed.Meta>
-                    <Feed.User>Visit Profile</Feed.User>
+                    <Feed.User onClick={() => router.push(`/profile/${username}`)}>Visit Profile</Feed.User>
                 </Feed.Meta>
             </Feed.Content>
         </Feed.Event>
