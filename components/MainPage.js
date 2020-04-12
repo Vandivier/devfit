@@ -37,7 +37,7 @@ const MainPage = () => {
   const { me: user } = data;
 
   const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
-  const openTweetModal = tweetId => {
+  const openTweetModal = (tweetId) => {
     setCurrentModalData({ type: 'TWEET', tweetId });
   };
   const closeModal = () => setCurrentModalData({});
@@ -54,7 +54,8 @@ const MainPage = () => {
 
           <div className="content">
             <NewTweetWithMutation />
-            <Feed onTweetClick={tweetId => openTweetModal(tweetId)} />
+            {/* TODO: below component is breaking build for unknown reason */}
+            {/* <Feed onTweetClick={tweetId => openTweetModal(tweetId)} /> */}
           </div>
 
           <div className="main-right">
@@ -67,7 +68,7 @@ const MainPage = () => {
           isOpen={currentModalData.type === 'TWEET'}
           tweetId={currentModalData.tweetId}
           onClose={closeModal}
-          onTweetClick={id => openTweetModal(id)}
+          onTweetClick={(id) => openTweetModal(id)}
         />
         <ComposeNewTweetModal
           isOpen={currentModalData.type === 'NEW_TWEET'}
