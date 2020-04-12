@@ -24,7 +24,7 @@ export async function loadFeed() {
  inner join "Post" P on U.id = P."userId"
  inner join "Challenge" C on P."challengeId" = C.id
  group by u.id
- order by points
+ order by points desc
   `);
     // const songs = await prisma.song.findMany({
     //   include: { artist: true }
