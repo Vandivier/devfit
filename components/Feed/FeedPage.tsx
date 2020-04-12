@@ -1,47 +1,28 @@
-import React, { useEffect, useState, Fragment } from 'react';
-
-import { Container, Loader, Item } from 'semantic-ui-react';
+import React from 'react';
+import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 import { Post } from '@prisma/client';
 
-type FeedPageProps = {};
+type FeedPageProps = {
+    data: Post[];
+};
 
-export const FeedPage: React.FC<FeedPageProps> = () => {
-  const [postItemsData, setPostItemsData] = useState<Post[] | undefined>(
-    undefined
-  );
-
-  return (
-    <div>
-      <h1 style={{textAlign: 'center'}}>Feed Page</h1>
-
-      {!postItemsData && (
+export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
+    return (
         <div>
-          <Loader active inline="centered" />
+            <h1>Feed Page</h1>
+            <NewChallenge />
+            <CloudinaryUpload />
+            <div>{JSON.stringify(data)}</div>
         </div>
-      )}
-
-      {postItemsData && (
-        <Container>
-          {postItemsData.map((post: Post) => (
-            <Fragment key={`post${post.id}`}>
-              <PostItem post={post} />
-            </Fragment>
-          ))}
-        </Container>
-      )}
-    </div>
-  );
+    );
 };
 
-type PostItemProps = {
-  post: Post;
-};
+type NewChallengeProps = {}
 
-const PostItem: React.FC<PostItemProps> = ({ post }) => {
-
-  return (
-      <Item>
-          Post
-      </Item>
-  );
-};
+const NewChallenge: React.FC<NewChallengeProps> = () => {
+    return (
+        <div>
+            <p>Challenge</p>      
+        </div>
+    );
+}

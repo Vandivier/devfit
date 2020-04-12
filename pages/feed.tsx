@@ -1,6 +1,7 @@
 import MainLayout from '../components/MainLayout';
 import { createPrismaClient } from '../utils/createPrismaClient';
 import { Post } from '@prisma/client';
+import { FeedPage } from '../components/Feed/FeedPage';
 
 export async function getStaticProps() {
     const prisma = createPrismaClient();
@@ -15,7 +16,7 @@ export async function getStaticProps() {
 
 const Feed = ({ data }: { data: Post[] }) => (
     <MainLayout>
-        <div>{JSON.stringify(data)}</div>
+        <FeedPage data={data} />
     </MainLayout>
 );
 
