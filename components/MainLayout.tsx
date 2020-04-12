@@ -11,6 +11,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         parentDiv: {
             minHeight: '100vh',
             maxWidth: '100vw',
+            fontFamily: 'Roboto'
         },
         childDiv: {
             padding: '0 10px',
