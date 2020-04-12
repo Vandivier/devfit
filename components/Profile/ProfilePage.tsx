@@ -1,13 +1,19 @@
 import React from 'react';
+import { createPrismaClient } from '../../utils/createPrismaClient';
+import { useGetter } from '../../real-components/useGetter';
+import { User } from '@prisma/client';
 
 type ProfilePageProps = {};
 
 export const ProfilePage: React.FC<ProfilePageProps> = () => {
-  return (
-    <div>
-      <h1>Profile Page</h1>
-    </div>
-  );
+    const { data, loading } = useGetter<{ user: User }>('/me');
+    console.log(data);
+    return (
+        <div>
+            <h1>Profile Page</h1>
+            <div>username: {data?.user.username}</div>
+        </div>
+    );
 };
 
 // import React, { useState } from 'react';

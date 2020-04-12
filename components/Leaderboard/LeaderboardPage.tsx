@@ -3,60 +3,63 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { leaderboardItems, LeaderboardItem } from '../MockData';
 import { Container, Loader, Feed } from 'semantic-ui-react';
 
-type LeaderboardPageProps = {}
+export type UserPoints = {
+    id: string;
+    username: string;
+    points: number;
+};
 
-export const LeaderboardPage: React.FC<LeaderboardPageProps> = () => {
+type LeaderboardPageProps = {
+    data: UserPoints[];
+};
 
-    const [leaderboardItemsData, setLeaderboardItemsData] = useState<LeaderboardItem[] | undefined>(undefined);
+export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
+    const [leaderboardItemsData, setLeaderboardItemsData] = useState<UserPoints[] | undefined>(undefined);
 
     useEffect(() => {
-        setTimeout(() => {
-            setLeaderboardItemsData(leaderboardItems);
-        }, 1000);
-    }, []);
+        setLeaderboardItemsData(data);
+    }, [data]);
 
     return (
         <div>
-            <h1 style={{textAlign: 'center'}}>Leaderboard Page</h1>
+            <h1 style={{ textAlign: 'center' }}>Leaderboard Page</h1>
 
-            {!leaderboardItemsData &&
+            {!leaderboardItemsData && (
                 <div>
-                    <Loader
-                        active
-                        inline='centered'
-                    />
+                    <Loader active inline="centered" />
                 </div>
-            }
+            )}
 
-            {leaderboardItemsData &&
+            {leaderboardItemsData && (
                 <Container>
-                    <Feed size='large'>
-                        {leaderboardItems.map((item: LeaderboardItem, index: number) => (
-                            <Fragment key={`leaderboardItem${index}`}>
-                                <LeaderboardItemComp leaderboardItem={item} />
-                            </Fragment>
-                        ))}
+                    <Feed size="large">
+                        {leaderboardItemsData.map((item, index) => {
+                            return (
+                                <Fragment key={`leaderboardItem${index}`}>
+                                    <LeaderboardItemComp leaderboardItem={item} />
+                                </Fragment>
+                            );
+                        })}
                     </Feed>
                 </Container>
-            }
+            )}
         </div>
     );
-}
+};
 
 type LeaderboardItemProps = {
-    leaderboardItem: LeaderboardItem
-}
+    leaderboardItem: UserPoints;
+};
 
 const LeaderboardItemComp: React.FC<LeaderboardItemProps> = ({ leaderboardItem }) => {
-
-    const { name, points } = leaderboardItem;
+    const { username, points } = leaderboardItem;
 
     return (
         <Feed.Event>
-            <Feed.Label icon='user secret' style={{display: 'flex', alignItems: 'center'}} />
+            <Feed.Label icon="user secret" style={{ display: 'flex', alignItems: 'center' }} />
             <Feed.Content>
                 <Feed.Summary>
-                    {name}
+                    {username}
                     <Feed.Date>{points} Points</Feed.Date>
                 </Feed.Summary>
                 <Feed.Meta>
@@ -65,4 +68,4 @@ const LeaderboardItemComp: React.FC<LeaderboardItemProps> = ({ leaderboardItem }
             </Feed.Content>
         </Feed.Event>
     );
-}
+};

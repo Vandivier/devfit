@@ -1,13 +1,50 @@
 import { NextPage } from 'next';
 import MainLayout from '../components/MainLayout';
-import { LeaderboardPage } from '../components/Leaderboard/LeaderboardPage';
+import { LeaderboardPage, UserPoints } from '../components/Leaderboard/LeaderboardPage';
+import { createPrismaClient } from '../utils/createPrismaClient';
 
-type HomeProps = {};
+export async function getStaticProps() {
+    const prisma = createPrismaClient();
+    // const stuff = await prisma.user.create({
+    //   data: {
+    //     username: 'bohb',
+    //     password: 'qqq',
+    //     posts: {
+    //       create: {
+    //         caption: 'stuff',
+    //         challenge: {
+    //           create: {
+    //             basePointValue: 5,
+    //             maxPoints: 5,
+    //             name: 'pushup',
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    const data = await prisma.raw(`
+  select u.id, u.username, sum(C."basePointValue") points from "User" u
+ inner join "Post" P on U.id = P."userId"
+ inner join "Challenge" C on P."challengeId" = C.id
+ group by u.id
+ order by points
+  `);
+    // const songs = await prisma.song.findMany({
+    //   include: { artist: true }
+    // });
 
-const Leaderboard: NextPage<HomeProps> = () => (
-  <MainLayout>
-    <LeaderboardPage />
-  </MainLayout>
+    return {
+        props: {
+            data,
+        },
+    };
+}
+
+const Leaderboard = ({ data }: { data: UserPoints[] }) => (
+    <MainLayout>
+        <LeaderboardPage data={data} />
+    </MainLayout>
 );
 
 export default Leaderboard;
