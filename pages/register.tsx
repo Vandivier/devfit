@@ -5,9 +5,9 @@ import { RegisterPage } from '../components/Register/RegisterPage';
 type RegisterProps = {};
 
 const Register: NextPage<RegisterProps> = () => (
-  <MainLayout>
-    <RegisterPage />
-  </MainLayout>
+    <MainLayout>
+        <RegisterPage />
+    </MainLayout>
 );
 
 export default Register;

@@ -5,9 +5,9 @@ import { ProfilePage } from '../components/Profile/ProfilePage';
 type ProfileProps = {};
 
 const Profile: NextPage<ProfileProps> = () => (
-  <MainLayout>
-    <ProfilePage />
-  </MainLayout>
+    <MainLayout>
+        <ProfilePage />
+    </MainLayout>
 );
 
 export default Profile;
