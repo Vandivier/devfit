@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react';
 
-import { useGetter } from '../real-components/useGetter';
 import { User } from '@prisma/client';
+import { useLogin } from '../real-components/useLogin';
+import { useLogout } from '../real-components/useLogout';
 
 export const useAuthenticated = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [userDetails, setUserDetails] = useState<User | undefined>(undefined);
-    const { data, loading } = useGetter<{ user: User }>('/me');
+    const { loginData } = useLogin<{ user: User }>('/me');
+    const { logoutData, logout } = useLogout<{ isLoggedOut: boolean }>('/logout');
 
     useEffect(() => {
-        if (data) {
-            setIsAuthenticated(!!data.user);
-            if (!!data.user) {
-                setUserDetails(data.user);
+        if (logoutData.isLoggedOut) {
+            setIsAuthenticated(false);
+        } else if (loginData) {
+            setIsAuthenticated(!!loginData.user);
+            if (!!loginData.user) {
+                setUserDetails(loginData.user);
             }
         }
-    }, [data]);
+    }, [loginData, logoutData]);
 
-    return { isAuthenticated, userDetails };
+    return { isAuthenticated, userDetails, logout };
 };

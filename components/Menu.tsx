@@ -74,11 +74,15 @@ const UnAuthenticatedMenu: React.FC<UnAuthenticatedMenuProps> = () => {
 type AuthenticatedMenuProps = {};
 
 const AuthenticatedMenu: React.FC<AuthenticatedMenuProps> = () => {
-    const router = useRouter();
+    const { logout } = useAuthenticated();
+
+    const handleSignOutClick = (e: React.SyntheticEvent) => {
+        logout();
+    };
 
     return (
         <div css={menuStyles.actionsDiv}>
-            <Button onClick={() => router.push('/logout')}>Sign Out</Button>
+            <Button onClick={handleSignOutClick}>Sign Out</Button>
         </div>
     );
 };
