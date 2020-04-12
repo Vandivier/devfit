@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
-import { Button, Form, Container, Message } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import {
+  Button,
+  Form,
+  Container,
+  Message,
+  Dropdown,
+  Loader,
+} from 'semantic-ui-react';
 import { poster } from '../../lib/poster';
 import { useRouter } from 'next/router';
+
+import { tagsList, Tag } from '../MockData';
 
 type UserInput = {
   username: string;
   password: string;
+  tags: number[];
 };
 
 type RegisterPageProps = {};
@@ -18,8 +28,26 @@ export const RegisterPage: React.FC<RegisterPageProps> = () => {
   const [userInput, setUserInput] = useState<UserInput>({
     username: '',
     password: '',
+    tags: [],
   });
+  const [tagOptions, setTagOptions] = useState<
+    { key: number; text: string; value: number }[] | undefined
+  >(undefined);
   const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setTagOptions(
+        tagsList.map((tag) => {
+          return {
+            key: tag.id,
+            text: tag.name,
+            value: tag.id,
+          };
+        })
+      );
+    }, 1000);
+  }, []);
 
   const loginPageStyles = {
     parentDiv: {
@@ -30,10 +58,19 @@ export const RegisterPage: React.FC<RegisterPageProps> = () => {
     },
   };
 
+  const handleTagSelection = (e: React.SyntheticEvent, { value }) => {
+    setUserInput({
+      ...userInput,
+      tags: [value],
+    });
+  };
+
   const handleLoginSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setButtonLoading(true);
     setErrorMessage(undefined);
+
+    console.log(userInput);
 
     if (userInput.username === '') {
       setErrorMessage({
@@ -75,52 +112,69 @@ export const RegisterPage: React.FC<RegisterPageProps> = () => {
     <div css={loginPageStyles.parentDiv}>
       <h1 style={{ textAlign: 'center' }}>Create an account</h1>
 
-      <Container>
-        <Form>
-          <Form.Field>
-            <label>Username</label>
-            <input
-              placeholder="Username"
-              onChange={(e) =>
-                setUserInput({ ...userInput, username: e.target.value })
-              }
+      {!tagOptions ? (
+        <Loader active inline="centered" />
+      ) : (
+        <Container>
+          <Form>
+            <Form.Field required>
+              <label>Username</label>
+              <input
+                placeholder="Username"
+                onChange={(e) =>
+                  setUserInput({ ...userInput, username: e.target.value })
+                }
+                disabled={buttonLoading}
+              />
+            </Form.Field>
+
+            <Form.Field required>
+              <label>Password</label>
+              <input
+                placeholder="Password"
+                type="password"
+                onChange={(e) =>
+                  setUserInput({ ...userInput, password: e.target.value })
+                }
+                disabled={buttonLoading}
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Tags</label>
+
+              <Dropdown
+                placeholder="Select tags"
+                fluid
+                multiple
+                selection
+                options={tagOptions}
+                onChange={handleTagSelection}
+              />
+            </Form.Field>
+
+            <Button
+              type="submit"
+              fluid
+              onClick={handleLoginSubmit}
+              loading={buttonLoading}
               disabled={buttonLoading}
-            />
-          </Form.Field>
+            >
+              Submit
+            </Button>
+          </Form>
 
-          <Form.Field>
-            <label>Password</label>
-            <input
-              placeholder="Password"
-              type="password"
-              onChange={(e) =>
-                setUserInput({ ...userInput, password: e.target.value })
-              }
-              disabled={buttonLoading}
-            />
-          </Form.Field>
-
-          <Button
-            type="submit"
-            fluid
-            onClick={handleLoginSubmit}
-            loading={buttonLoading}
-            disabled={buttonLoading}
-          >
-            Submit
-          </Button>
-        </Form>
-
-        <Message
-          hidden={!errorMessage}
-          header={errorMessage?.header}
-          content={errorMessage?.content}
-          info={errorMessage?.info || false}
-          positive={errorMessage?.positive || false}
-          warning={errorMessage?.warning || false}
-          negative={errorMessage?.negative || false}
-        />
-      </Container>
+          <Message
+            hidden={!errorMessage}
+            header={errorMessage?.header}
+            content={errorMessage?.content}
+            info={errorMessage?.info || false}
+            positive={errorMessage?.positive || false}
+            warning={errorMessage?.warning || false}
+            negative={errorMessage?.negative || false}
+          />
+        </Container>
+      )}
     </div>
   );
 };
