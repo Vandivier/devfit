@@ -10,7 +10,12 @@ import { Card, Image, Feed, Segment } from 'semantic-ui-react';
 
 export async function getStaticProps({ params: { username } }) {
     const prisma = createPrismaClient();
-    const pUser = prisma.user.findOne({ where: { username } });
+    const pUser = prisma.user.findOne({
+        where: { username },
+        include: {
+            posts: true,
+        },
+    });
     const pp = prisma.raw(`
     select sum(C."basePointValue") points from "User" u
    inner join "Post" P on U.id = P."userId"
@@ -23,6 +28,7 @@ export async function getStaticProps({ params: { username } }) {
         props: {
             data: {
                 ...user,
+                posts: user.posts.map((x) => ({ ...x, createdAt: x.createdAt.toString() })),
                 points: points || 0,
             },
         },
@@ -37,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 const LookupProfile: React.FC<{
-    data: (User & { points: number }) | null;
+    data: (User & { points: number; posts: Post[] }) | null;
 }> = ({ data }) => {
     const { isFallback } = useRouter();
 
@@ -73,7 +79,7 @@ const LookupProfile: React.FC<{
                         </Card>
 
                         {/* TODO: Populate a list of their posts */}
-                        <ProfilePosts posts={undefined} />
+                        <ProfilePosts posts={data.posts} />
                     </Segment>
                 </div>
             ) : (
