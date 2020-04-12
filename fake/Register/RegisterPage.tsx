@@ -1,9 +1,5 @@
-/** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-
 import React, { useState } from 'react';
-
-import { Container, Form, Button, Message } from 'semantic-ui-react';
+import { Button, Form, Container, Message } from 'semantic-ui-react';
 import { poster } from '../../lib/poster';
 import { useRouter } from 'next/router';
 
@@ -12,9 +8,9 @@ type UserInput = {
   password: string;
 };
 
-type LoginPageProps = {};
+type RegisterPageProps = {};
 
-export const LoginPage: React.FC<LoginPageProps> = () => {
+export const RegisterPage: React.FC<RegisterPageProps> = () => {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<ErrorMessage | undefined>(
     undefined
@@ -57,7 +53,11 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
       return setButtonLoading(false);
     }
 
-    return poster('/login', userInput).then((x) => {
+    return poster('/register', {
+      ...userInput,
+      tagIds: [],
+      newTags: [],
+    }).then((x) => {
       if (x.status === 200) {
         router.push('/feed');
       } else {
@@ -73,7 +73,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
 
   return (
     <div css={loginPageStyles.parentDiv}>
-      <h1 style={{ textAlign: 'center' }}>Login to your account</h1>
+      <h1 style={{ textAlign: 'center' }}>Create an account</h1>
 
       <Container>
         <Form>
