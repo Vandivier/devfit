@@ -1,17 +1,20 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { createPrismaClient } from '../../utils/createPrismaClient';
 import { useGetter } from '../../real-components/useGetter';
 import { User, Post } from '@prisma/client';
 
-import { Card, Icon, Image, Feed, Segment } from 'semantic-ui-react';
+import { Card, Icon, Image, Feed, Segment, Modal, Message } from 'semantic-ui-react';
+import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 
 type ProfilePageProps = {};
 
 export const ProfilePage: React.FC<ProfilePageProps> = () => {
     const { data, loading } = useGetter<{ user: User }>('/me');
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<ErrorMessage | undefined>(undefined);
 
     const profileStyles = {
         parentDiv: {
@@ -26,6 +29,25 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
     return (
         <div css={profileStyles.parentDiv}>
             <h1>Your Profile</h1>
+
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)} size="small" closeIcon centered={false}>
+                <Modal.Content>
+                    {/* TODO: implement cloudinary when fixed */}
+                    <p>Cloudinary here</p>
+                    {/* <CloudinaryUpload /> */}
+
+                    <Message
+                        hidden={!errorMessage}
+                        header={errorMessage?.header}
+                        content={errorMessage?.content}
+                        info={errorMessage?.info || false}
+                        positive={errorMessage?.positive || false}
+                        warning={errorMessage?.warning || false}
+                        negative={errorMessage?.negative || false}
+                    />
+                </Modal.Content>
+            </Modal>
+
             <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
                 <Card>
                     {/* TODO: Attach user profile picture to image */}
@@ -40,7 +62,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
 
                     <Card.Content extra>
                         {/* TODO: Allow user to upload photo */}
-                        <a>Update profile picture</a>
+                        <a onClick={() => setModalOpen(!modalOpen)}>Change profile picture</a>
                     </Card.Content>
                 </Card>
 
