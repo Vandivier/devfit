@@ -1,0 +1,43 @@
+{
+    "name": "devfit-express-mock",
+    "version": "1.0.0",
+    "description": "Mock Express server for Devfit web app",
+    "scripts": {
+        "debug": "node --inspect-brk server",
+        "start": "nodemon server",
+        "preferred-be": "cross-env MOCK_USER=default nodemon --config nodemon-server.json server",
+        "preferred-ui": "npm run watch",
+        "watch": "npm-watch"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "1.19.0",
+        "dotenv": "8.2.0",
+        "express": "4.16.1",
+        "helmet": "3.21.2",
+        "http-errors": "1.7.3",
+        "http-proxy-middleware": "0.20.0",
+        "nodemon": "2.0.2",
+        "npm-watch": "0.6.0",
+        "prettier": "1.18.2",
+        "tslint": "~6.1.1",
+        "watch": "1.0.2"
+    },
+    "watch": {
+        "rebuild-ui": {
+            "extensions": "js,tsx",
+            "ignore": [
+                "**.spec.ts"
+            ],
+            "patterns": [
+                "../components/**",
+                "../lib/**",
+                "../pages/**"
+            ]
+        }
+    },
+    "devDependencies": {
+        "cross-env": "~7.0.2"
+    }
+}
