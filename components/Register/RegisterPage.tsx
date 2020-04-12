@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Container, Message, Dropdown, Loader } from 'semantic-ui-react';
-import { poster } from '../../lib/poster';
+import { poster } from '../../lib/request';
 import { useRouter } from 'next/router';
 
 import { tagsList, Tag } from '../MockData';
