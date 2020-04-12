@@ -1,11 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 
-type FeedPageProps = {}
+import { postItems, Post } from '../MockData';
+import { Container, Loader, Item } from 'semantic-ui-react';
+
+type FeedPageProps = {};
 
 export const FeedPage: React.FC<FeedPageProps> = () => {
-    return (
+  const [postItemsData, setPostItemsData] = useState<Post[] | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPostItemsData(postItems);
+    }, 1000);
+  }, []);
+
+  return (
+    <div>
+      <h1 style={{textAlign: 'center'}}>Feed Page</h1>
+
+      {!postItemsData && (
         <div>
-            <h1>Feed Page</h1>
+          <Loader active inline="centered" />
         </div>
-    );
-}
+      )}
+
+      {postItemsData && (
+        <Container>
+          {postItemsData.map((post: Post) => (
+            <Fragment key={`post${post.id}`}>
+              <PostItem post={post} />
+            </Fragment>
+          ))}
+        </Container>
+      )}
+    </div>
+  );
+};
+
+type PostItemProps = {
+  post: Post;
+};
+
+const PostItem: React.FC<PostItemProps> = ({ post }) => {
+  const { id, user, challenge, createdAt, likes } = post;
+
+  return (
+      <Item>
+          Post: {challenge.name}
+      </Item>
+  );
+};
