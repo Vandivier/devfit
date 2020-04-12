@@ -1,16 +1,17 @@
 import Head from 'next/head';
 
-import { Menu } from '../Components/Menu';
-
-type DefaultHeadProps = {}
+type DefaultHeadProps = {};
 
 const DefaultHead: React.FC<DefaultHeadProps> = () => {
-    return (
-		<Head>
-			<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
-			<title>DevFit - do u even lift?</title>
-		</Head>
-	)
+  return (
+    <Head>
+      <link
+        rel="stylesheet"
+        href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+      />
+      <title>DevFit - do u even lift?</title>
+    </Head>
+  );
 };
-  
+
 export default DefaultHead;

@@ -1,7 +1,8 @@
-import { createPrismaClient } from "../../utils/createPrismaClient";
-import { hash } from "bcryptjs";
-import * as yup from "yup";
-import { session, SessionHandler } from "../../middleware/session";
+import { createPrismaClient } from '../../utils/createPrismaClient';
+import { hash } from 'bcryptjs';
+import * as yup from 'yup';
+import { session, SessionHandler } from '../../middleware/session';
+import { Tag } from '@prisma/client';
 
 const schema = yup.object().shape({
   username: yup.string().required(),
@@ -20,7 +21,7 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
     await schema.validate(req.body);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ error: "invalid input" });
+    res.status(400).json({ error: 'invalid input' });
     return;
   }
 
@@ -29,7 +30,7 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
   // console.log("body2: ", JSON.parse(req.body));
   // console.log("username: ", req.body.username);
   if (await prisma.user.findOne({ where: { username } })) {
-    res.status(400).json({ error: "username already exists" });
+    res.status(400).json({ error: 'username already exists' });
     return;
   }
 
@@ -39,12 +40,12 @@ const handler: SessionHandler = async (req, res, { setUserId }) => {
     data: {
       username,
       password: hashedPassword,
-      // tags: {
-      //   connect: tagIds.map((id: string) => ({
-      //     id,
-      //   })),
-      //   create: newTags.map((tag: Tag) => tag),
-      // },
+      tags: {
+        connect: tagIds.map((id: string) => ({
+          id,
+        })),
+        create: newTags.map((tag: Tag) => tag),
+      },
     },
   });
 
