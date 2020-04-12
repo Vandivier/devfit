@@ -4,19 +4,19 @@ const accessControlAllowOrigin = process.env.NODE_ENV === 'production' ? 'https:
 
 export const poster = (route: string, body: any) =>
     // timeout(
-        fetch(domain + route, {
-            credentials: 'include',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Origin: accessControlAllowOrigin,
-            },
-            body: JSON.stringify(body),
-        })
-    // );
+    fetch(domain + route, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: accessControlAllowOrigin,
+        },
+        body: JSON.stringify(body),
+    });
+// );
 
 export const getter = (route: string) =>
-    // timeout(
+    timeout(
         fetch(domain + route, {
             credentials: 'include',
             method: 'GET',
@@ -25,14 +25,14 @@ export const getter = (route: string) =>
                 Origin: accessControlAllowOrigin,
             },
         })
-    // );
+    );
 
 // TODO: fix typing and use
-// function timeout<T>(promise: T) <T|Error> {
-//     return new Promise(function (resolve, reject) {
-//         setTimeout(function () {
-//             reject(new Error('timeout'));
-//         }, ALLOWED_TIMEOUT);
-//         promise.then(resolve, reject);
-//     });
-// }
+const timeout = <T>(promise: Promise<T>) => {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            reject(new Error('timeout'));
+        }, ALLOWED_TIMEOUT);
+        promise.then(resolve, reject);
+    });
+};
