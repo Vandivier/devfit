@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 import { Post } from '@prisma/client';
 
-import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed } from 'semantic-ui-react';
+import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 
 type FeedPageProps = {
     data: Post[];
@@ -11,10 +11,16 @@ type FeedPageProps = {
 export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
     return (
         <div>
-            <h1>Feed Page</h1>
+            <h1 style={{ textAlign: 'center' }}>Feed Page</h1>
             <NewChallenge />
 
-            <PostsFeed data={data} />
+            <Segment>
+                {data.length < 1 ?
+                    <p style={{textAlign: 'center'}}>No feed items to show.</p>
+                :
+                    <PostsFeed data={data} />
+                }
+            </Segment>
         </div>
     );
 };
@@ -173,7 +179,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
                 </Modal.Content>
             </Modal>
 
-            <Button fluid size="big" color="pink" onClick={() => setModalOpen(!modalOpen)}>
+            <Button primary fluid onClick={() => setModalOpen(!modalOpen)}>
                 Complete a challenge
             </Button>
         </div>

@@ -6,7 +6,7 @@ import { createPrismaClient } from '../../utils/createPrismaClient';
 import { useGetter } from '../../real-components/useGetter';
 import { User, Post } from '@prisma/client';
 
-import { Card, Icon, Image, Feed } from 'semantic-ui-react';
+import { Card, Icon, Image, Feed, Segment } from 'semantic-ui-react';
 
 type ProfilePageProps = {};
 
@@ -26,25 +26,28 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
     return (
         <div css={profileStyles.parentDiv}>
             <h1>Profile Page</h1>
-            <Card>
-                {/* TODO: Attach user profile picture to image */}
-                {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
-                <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
+            <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
+                <Card>
+                    {/* TODO: Attach user profile picture to image */}
+                    {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
+                    <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
 
-                <Card.Content>
-                    <Card.Header>{data?.user.username}</Card.Header>
-                    {/* TODO: Add actual rank */}
-                    <Card.Meta>Rank 31313</Card.Meta>
-                </Card.Content>
+                    <Card.Content>
+                        <Card.Header>{data?.user.username}</Card.Header>
+                        {/* TODO: Add actual rank */}
+                        <Card.Meta>Rank 31313</Card.Meta>
+                    </Card.Content>
 
-                <Card.Content extra>
-                    {/* TODO: Allow user to upload photo */}
-                    <a>Update profile picture</a>
-                </Card.Content>
-            </Card>
+                    <Card.Content extra>
+                        {/* TODO: Allow user to upload photo */}
+                        <a>Update profile picture</a>
+                    </Card.Content>
+                </Card>
 
-            {/* TODO: Populate a list of their posts */}
-            <ProfilePosts posts={undefined} />
+                {/* TODO: Populate a list of their posts */}
+                <ProfilePosts posts={undefined} />
+            </Segment>
+
         </div>
     );
 };
@@ -55,7 +58,7 @@ type ProfilePostsProps = {
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
     if (!posts) {
-        return <p>No posts.</p>;
+        return <p>No posts to show.</p>;
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Container, Loader, Feed, Button } from 'semantic-ui-react';
+import { Container, Loader, Feed, Button, Segment } from 'semantic-ui-react';
 import { useRouter, Router } from 'next/router';
 import { useAuthenticated } from '../useAuthenticated';
 
@@ -44,7 +44,7 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
             )}
 
             {leaderboardItemsData && (
-                <Container>
+                <Segment>
                     <Feed size="large">
                         {leaderboardItemsData.map((item, index) => {
                             return (
@@ -53,8 +53,12 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
                                 </Fragment>
                             );
                         })}
+                        
+                        {leaderboardItemsData.length < 1 &&
+                            <p style={{textAlign:'center'}}>No ranks to show.</p>
+                        }
                     </Feed>
-                </Container>
+                </Segment>
             )}
         </div>
     );

@@ -6,7 +6,7 @@ import MainLayout from '../../components/MainLayout';
 import { createPrismaClient } from '../../utils/createPrismaClient';
 import { User, Post } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { Card, Image, Feed } from 'semantic-ui-react';
+import { Card, Image, Feed, Segment } from 'semantic-ui-react';
 
 export async function getStaticProps({ params: { username } }) {
     const prisma = createPrismaClient();
@@ -42,30 +42,27 @@ const LookupProfile: React.FC<{
     }
 
     if (isFallback) {
-        return <div>loading...</div>;
+        return <div style={{height: '100%',}}>loading...</div>;
     }
     return <MainLayout>{data ? 
         <div css={profileStyles.parentDiv}>
             {/* {JSON.stringify(data)} */}
-            <Card>
-                {/* TODO: Attach user profile picture to image */}
-                {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
-                <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
-                
-                <Card.Content>
-                    <Card.Header>{data?.username}</Card.Header>
-                    {/* TODO: Add actual rank */}
-                    <Card.Meta>Rank 31313</Card.Meta>
-                </Card.Content>
+            <Segment style={{width: '100%', display: 'flex', flexDirection: 'column' as 'column', alignItems: 'center'}}>
+                <Card>
+                    {/* TODO: Attach user profile picture to image */}
+                    {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
+                    <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
+                    
+                    <Card.Content>
+                        <Card.Header>{data?.username}</Card.Header>
+                        {/* TODO: Add actual rank */}
+                        <Card.Meta>Rank 31313</Card.Meta>
+                    </Card.Content>
+                </Card>
 
-                <Card.Content extra>
-                    {/* TODO: Allow user to upload photo */}
-                    <a>Update profile picture</a>
-                </Card.Content>
-            </Card>
-
-            {/* TODO: Populate a list of their posts */}
-            <ProfilePosts posts={undefined} />
+                {/* TODO: Populate a list of their posts */}
+                <ProfilePosts posts={undefined} />
+            </Segment>
         </div> 
     
     : <div>could not find user</div>}</MainLayout>;
@@ -81,7 +78,7 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
     
     if (!posts) {
         return (
-            <p>No posts.</p>
+            <p>No posts to show.</p>
         );
     }
 
