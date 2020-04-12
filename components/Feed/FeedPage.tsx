@@ -13,7 +13,6 @@ export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
         <div>
             <h1 style={{ textAlign: 'center' }}>Global Feed</h1>
             <NewChallenge />
-            <CloudinaryUpload />
             <Segment>{data.length < 1 ? <p style={{ textAlign: 'center' }}>No feed items to show.</p> : <PostsFeed data={data} />}</Segment>
         </div>
     );
@@ -152,8 +151,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
 
                         <Form.Field>
                             <label>Video/Image validation</label>
-                            {/* TODO: Fix this */}
-                            {/* <CloudinaryUpload /> */}
+                            <CloudinaryUpload onUpload={() => {}} />
                         </Form.Field>
 
                         <Button type="submit" fluid onClick={handleExerciseSubmit} loading={buttonLoading} disabled={buttonLoading}>

@@ -1,47 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 
-interface CloudinaryUploadProps {}
+interface CloudinaryImg {
+    public_id: string;
+    version: number;
+    signature: string;
+    width: number;
+    height: number;
+    format: string;
+    resource_type: string;
+    created_at: Date;
+    tags: any[];
+    bytes: number;
+    type: string;
+    etag: string;
+    placeholder: boolean;
+    url: string;
+    secure_url: string;
+    existing: boolean;
+    original_filename: string;
+}
 
-export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({}) => {
-    useEffect(() => {
-        const id = setInterval(() => {
-            if (!('cloudinary' in window)) {
-                return;
-            }
-            console.log('only see me once :)');
-            clearInterval(id);
-            var myWidget = (window as any).cloudinary.createUploadWidget(
-                {
-                    cloudName: 'dtskkn5bc', // @todo
-                    uploadPreset: 'my_preset', // @todo
-                },
-                (error, result) => {
-                    if (!error && result && result.event === 'success') {
-                        console.log('Done! Here is the image info: ', result.info);
-                    }
-                }
-            );
+interface CloudinaryUploadProps {
+    onUpload: (img: CloudinaryImg) => void;
+}
 
-            document.getElementById('upload_widget').addEventListener(
-                'click',
-                function () {
-                    myWidget.open();
-                },
-                false
-            );
-        }, 500);
-
-        return () => {
-            clearInterval(id);
-        };
+export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({ onUpload }) => {
+    const onDrop = useCallback(async ([file]) => {
+        const data = new FormData();
+        data.append('file', file);
+        data.append('upload_preset', 'zl2awopq');
+        const upload = await fetch('https://api.cloudinary.com/v1_1/dtskkn5bc/image/upload', {
+            method: 'POST',
+            body: data,
+        });
+        const image = await upload.json();
+        console.log(image);
+        onUpload(image);
     }, []);
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
     return (
-        <>
-            <button id="upload_widget" className="cloudinary-button">
-                Upload files
-            </button>
-            <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
-        </>
+        <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {isDragActive ? <p>Drop the files here ...</p> : <p>Drag 'n' drop some files here, or click to select files</p>}
+        </div>
     );
 };
