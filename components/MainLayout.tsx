@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 import DefaultHead from './DefaultHead';
 import { Menu } from './Menu';

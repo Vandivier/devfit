@@ -1,169 +1,90 @@
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 import React from 'react';
 import { createPrismaClient } from '../../utils/createPrismaClient';
 import { useGetter } from '../../real-components/useGetter';
-import { User } from '@prisma/client';
+import { User, Post } from '@prisma/client';
+
+import { Card, Icon, Image, Feed } from 'semantic-ui-react';
 
 type ProfilePageProps = {};
 
 export const ProfilePage: React.FC<ProfilePageProps> = () => {
     const { data, loading } = useGetter<{ user: User }>('/me');
-    console.log(data);
+
+    const profileStyles = {
+        parentDiv: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column' as 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        }
+    }
+
     return (
-        <div>
+        <div css={profileStyles.parentDiv}>
             <h1>Profile Page</h1>
-            <div>username: {data?.user.username}</div>
+            <Card>
+                {/* TODO: Attach user profile picture to image */}
+                {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
+                <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
+                
+                <Card.Content>
+                    <Card.Header>{data?.user.username}</Card.Header>
+                    {/* TODO: Add actual rank */}
+                    <Card.Meta>Rank 31313</Card.Meta>
+                </Card.Content>
+
+                <Card.Content extra>
+                    {/* TODO: Allow user to upload photo */}
+                    <a>Update profile picture</a>
+                </Card.Content>
+            </Card>
+
+            {/* TODO: Populate a list of their posts */}
+            <ProfilePosts posts={undefined} />
         </div>
     );
 };
 
-// import React, { useState } from 'react';
-// import { gql } from 'apollo-boost';
-// import { useQuery } from 'react-apollo-hooks';
-// import colors from '../lib/colors';
-// import PageLoader from 'components/PageLoader';
-// import Navbar from 'components/Navbar';
-// import ProfileHeader from 'components/ProfileHeader';
-// import ProfileDetails from 'components/ProfileDetails';
-// import ProfileTweets from 'components/ProfileTweets';
-// import WhoToFollow from 'components/WhoToFollow';
-// import TweetModal from 'components/TweetModal';
-// import ComposeNewTweetModal from 'components/ComposeNewTweetModal';
-// import Footer from 'components/Footer';
-// import { LoggedInUserProvider } from 'components/LoggedInUserProvider';
+type ProfilePostsProps = {
+    posts: Post[];
+}
 
-// const GET_USER_QUERY = gql`
-//   query getUser($username: String!) {
-//     user(input: { username: $username }) {
-//       id
-//       name
-//       username
-//       avatarSourceUrl
-//       tweetsCount
-//       followersCount
-//       followingCount
-//     }
-//     me {
-//       id
-//       name
-//       username
-//       avatarSourceUrl
-//       tweetsCount
-//       followersCount
-//       followingCount
-//       isFollowingUser(username: $username)
-//     }
-//   }
-// `;
+const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
+    
+    if (!posts) {
+        return (
+            <p>No posts.</p>
+        );
+    }
 
-// let ProfilePageUsingApollo: any = ({ username }) => {
-//   const [currentModalData, setCurrentModalData] = useState({});
-//   const { data, loading } = useQuery(GET_USER_QUERY, {
-//     variables: { username },
-//   });
+    return (
+        <Feed>
+            {posts.map((post: Post) => (
+                <Feed.Event key={post.id}>
+                    <Feed.Content>
+                        <Feed.Summary>
+                            Challenge completed: {post.challengeId}
+                            <Feed.Date>{post.createdAt}</Feed.Date>
+                        </Feed.Summary>
+                        
+                        {post.videoUrl &&
+                            <Feed.Extra text>
+                                {post.videoUrl}
+                                {post.caption}
+                            </Feed.Extra>
+                        }
 
-//   if (loading) {
-//     return <PageLoader />;
-//   }
-
-//   const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
-//   const openTweetModal = (tweetId) => {
-//     setCurrentModalData({ type: 'TWEET', tweetId });
-//   };
-//   const closeModal = () => setCurrentModalData({});
-
-//   const { user, me } = data;
-
-//   return (
-//     <div className="main">
-//       <LoggedInUserProvider loggedInUser={me}>
-//         <Navbar onNewTweetClick={openNewTweetModal} />
-//         <ProfileHeader user={user} />
-
-//         <div className="container">
-//           <div className="main-left">
-//             <ProfileDetails name={user.name} username={user.username} />
-//           </div>
-
-//           <div className="content">
-//             <div className="content-heading">Tweets</div>
-//             <ProfileTweets
-//               user={user}
-//               onTweetClick={(tweetId) => openTweetModal(tweetId)}
-//             />
-//           </div>
-
-//           <div className="main-right">
-//             <WhoToFollow />
-//             <Footer />
-//           </div>
-//         </div>
-
-//         <TweetModal
-//           isOpen={currentModalData.type === 'TWEET'}
-//           tweetId={currentModalData.tweetId}
-//           onClose={closeModal}
-//           onTweetClick={(id) => openTweetModal(id)}
-//         />
-//         <ComposeNewTweetModal
-//           isOpen={currentModalData.type === 'NEW_TWEET'}
-//           onClose={closeModal}
-//         />
-//       </LoggedInUserProvider>
-
-//       <style jsx>{`
-//         .main {
-//           padding-top: 46px;
-//           min-height: 100vh;
-//           background: #e6ecf0;
-//         }
-
-//         .main-left,
-//         .main-right {
-//           width: 290px;
-//           padding: 0 8px;
-//         }
-
-//         .container {
-//           margin-top: 1rem;
-//           padding: 0 32px;
-//           display: flex;
-//         }
-
-//         .content {
-//           flex: 1 1 0%;
-//           border-top: 1px solid ${colors.boxBorder};
-//         }
-
-//         .content-heading {
-//           padding: 12px 15px;
-//           background: #fff;
-//           font-size: 1.2em;
-//           font-weight: 700;
-//           line-height: 1.2em;
-//           color: ${colors.heading};
-//           border: 1px solid ${colors.boxBorder};
-//         }
-
-//         .main :global(.wtf) {
-//           margin-bottom: 12px;
-//         }
-
-//         @media (max-width: 1280px) {
-//           .main-right {
-//             display: none;
-//           }
-
-//           .content {
-//             padding-right: 8px;
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// };
-
-// ProfilePageUsingApollo.getInitialProps = ({ query }) => ({
-//   username: query.username,
-// });
-
-// export ProfilePageUsingApollo;
+                        <Feed.Meta>
+                            {/* TODO: Replace with actual number of likes */}
+                            14 likes
+                        </Feed.Meta>
+                    </Feed.Content>
+                </Feed.Event>
+            ))}
+        </Feed>  
+    );
+}
