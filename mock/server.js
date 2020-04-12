@@ -1,9 +1,9 @@
 // @ts-nocheck
 
 const bodyParser = require('body-parser'); // middleware to auto-parse POST bodies
+const cors = require('cors');
 const dotenv = require('dotenv');
 const express = require('express');
-const helmet = require('helmet'); // sets HTTP headers for better security
 const path = require('path');
 
 // TODO: can we call this within main() instead of before?
@@ -27,7 +27,15 @@ async function main() {
     console.log('ENVIRONMENTAL_VARIABLE_FILE_PATH in server.js.main(): ', process.env.ENVIRONMENTAL_VARIABLE_FILE_PATH);
 
     app.set('port', process.env.PORT);
-    app.use(helmet()); // safer http header defaults
+    // note: insecure across-the-board preflight + cors approval. mock server only
+    app.use(
+        cors({
+            credentials: true,
+            origin: 'http://localhost:3000',
+        })
+    );
+    app.options('*', cors());
+
     app.use(
         bodyParser.json({
             limit: '150mb',
@@ -40,7 +48,6 @@ async function main() {
         })
     );
 
-    app.use(helmet.noCache(), express.static('public'));
     app.use('/api', controllerMocks);
     app.use('/*', (req, res, next) => {
         // res.sendFile(__dirname + '/public/index.html');
