@@ -16,12 +16,12 @@ export async function getStaticProps({ params: { username } }) {
             posts: true,
         },
     });
-    const pp = prisma.raw(`
+    const pp = prisma.raw`
     select sum(C."basePointValue") points from "User" u
    inner join "Post" P on U.id = P."userId"
    inner join "Challenge" C on P."challengeId" = C.id
-   where u.username = '${username}'
-    `);
+   where u.username = ${username}
+    `;
     const [user, [{ points }]] = await Promise.all([pUser, pp]);
 
     return {
