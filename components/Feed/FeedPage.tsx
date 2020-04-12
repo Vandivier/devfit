@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
 import { PostWithStuff } from '../../utils/PostWithStuff';
+import { useGetter } from '../../real-components/useGetter';
 
 type FeedPageProps = {
     data: PostWithStuff[];
@@ -58,16 +59,18 @@ type UserInput = {
     proof?: { type: string; link: string };
 };
 
-const exerciseList = [
-    { id: 111, exercise: '15 Pushups' },
-    { id: 222, exercise: '10 Minute jog' },
-    { id: 333, exercise: '20 Situps' },
-    { id: 444, exercise: '100 Squats' },
-];
+// const exerciseList = [
+//     { id: 111, exercise: '15 Pushups' },
+//     { id: 222, exercise: '10 Minute jog' },
+//     { id: 333, exercise: '20 Situps' },
+//     { id: 444, exercise: '100 Squats' },
+// ];
 
 type NewChallengeProps = {};
 
 const NewChallenge: React.FC<NewChallengeProps> = () => {
+    const { data } = useGetter('/challenges');
+    const exerciseList = data ? data.map((x) => ({ ...x, exercise: x.name })) : [];
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [userInput, setUserInput] = useState<UserInput>({
         exercise: undefined,
