@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
 import { PostWithStuff } from '../../utils/PostWithStuff';
+import { useRouter } from 'next/router';
 
 type FeedPageProps = {
     data: PostWithStuff[];
@@ -25,7 +26,8 @@ type PostsFeedProps = {
 };
 
 const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
-    console.log(data);
+
+    const router = useRouter();
 
     return (
         <Feed>
@@ -33,7 +35,7 @@ const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
                 <Feed.Event key={'' + post.id}>
                     <Feed.Content>
                         <Feed.Summary>
-                            Challenge completed: {post.challengeId}
+                            {post.user.username} completed: {post.challenge.name}
                             <Feed.Date>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</Feed.Date>
                             {post.videoUrl && <Image src={post.videoUrl} size="small" />}
                         </Feed.Summary>
@@ -41,8 +43,7 @@ const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
                         {post.caption && <Feed.Extra text>{post.caption}</Feed.Extra>}
 
                         <Feed.Meta>
-                            {/* TODO: Replace with actual number of likes */}
-                            14 likes
+                            <Feed.User onClick={() => router.push(`/profile/${post.user.username}`)}>Visit Profile</Feed.User>
                         </Feed.Meta>
                     </Feed.Content>
                 </Feed.Event>
@@ -59,10 +60,10 @@ type UserInput = {
 };
 
 const exerciseList = [
-    { id: 111, exercise: '15 Pushups' },
-    { id: 222, exercise: '10 Minute jog' },
-    { id: 333, exercise: '20 Situps' },
-    { id: 444, exercise: '100 Squats' },
+    { id: 111, exercise: 'Pushups' },
+    { id: 222, exercise: 'Lunges' },
+    { id: 333, exercise: 'Situps' },
+    { id: 444, exercise: 'Squats' },
 ];
 
 type NewChallengeProps = {};
