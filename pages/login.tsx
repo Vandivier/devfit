@@ -5,9 +5,9 @@ import { LoginPage } from '../components/Login/LoginPage';
 type HomeProps = {};
 
 const Login: NextPage<HomeProps> = () => (
-  <MainLayout>
-    <LoginPage />
-  </MainLayout>
+    <MainLayout>
+        <LoginPage />
+    </MainLayout>
 );
 
 export default Login;

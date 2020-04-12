@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core'
+import { jsx, css } from '@emotion/core';
 
 import React from 'react';
 import { createPrismaClient } from '../../utils/createPrismaClient';
@@ -19,9 +19,9 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
             display: 'flex',
             flexDirection: 'column' as 'column',
             justifyContent: 'center',
-            alignItems: 'center'
-        }
-    }
+            alignItems: 'center',
+        },
+    };
 
     return (
         <div css={profileStyles.parentDiv}>
@@ -30,7 +30,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
                 {/* TODO: Attach user profile picture to image */}
                 {/* <Image src={data?.user.profile ? data.user.profile : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} /> */}
                 <Image src={'https://react.semantic-ui.com/images/avatar/large/matthew.png'} wrapped ui={false} />
-                
+
                 <Card.Content>
                     <Card.Header>{data?.user.username}</Card.Header>
                     {/* TODO: Add actual rank */}
@@ -51,14 +51,11 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
 
 type ProfilePostsProps = {
     posts: Post[];
-}
+};
 
 const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
-    
     if (!posts) {
-        return (
-            <p>No posts.</p>
-        );
+        return <p>No posts.</p>;
     }
 
     return (
@@ -70,13 +67,13 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                             Challenge completed: {post.challengeId}
                             <Feed.Date>{post.createdAt}</Feed.Date>
                         </Feed.Summary>
-                        
-                        {post.videoUrl &&
+
+                        {post.videoUrl && (
                             <Feed.Extra text>
                                 {post.videoUrl}
                                 {post.caption}
                             </Feed.Extra>
-                        }
+                        )}
 
                         <Feed.Meta>
                             {/* TODO: Replace with actual number of likes */}
@@ -85,6 +82,6 @@ const ProfilePosts: React.FC<ProfilePostsProps> = ({ posts }) => {
                     </Feed.Content>
                 </Feed.Event>
             ))}
-        </Feed>  
+        </Feed>
     );
-}
+};

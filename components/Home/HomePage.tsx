@@ -1,6 +1,6 @@
 import React from 'react';
 
-type HomePageProps = {}
+type HomePageProps = {};
 
 export const HomePage: React.FC<HomePageProps> = () => {
     return (
@@ -8,4 +8,4 @@ export const HomePage: React.FC<HomePageProps> = () => {
             <h1>Home Page</h1>
         </div>
     );
-}
+};

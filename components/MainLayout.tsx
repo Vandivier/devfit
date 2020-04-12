@@ -4,29 +4,27 @@ import { jsx, css } from '@emotion/core';
 import DefaultHead from './DefaultHead';
 import { Menu } from './Menu';
 
-type MainLayoutProps = {}
+type MainLayoutProps = {};
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-	const mainLayoutStyles = {
-		parentDiv: {
-			minHeight: '100vh',
-			maxWidth: '100vw'
-		},
-		childDiv: {
-			padding: '0 10px'
-		}
-	}
+    const mainLayoutStyles = {
+        parentDiv: {
+            minHeight: '100vh',
+            maxWidth: '100vw',
+        },
+        childDiv: {
+            padding: '0 10px',
+        },
+    };
 
-	return (
-		<div css={mainLayoutStyles.parentDiv}>
-			<DefaultHead />
-			<Menu />
+    return (
+        <div css={mainLayoutStyles.parentDiv}>
+            <DefaultHead />
+            <Menu />
 
-			<div css={mainLayoutStyles.childDiv}>
-				{children}
-			</div>
-		</div>		
-	)
+            <div css={mainLayoutStyles.childDiv}>{children}</div>
+        </div>
+    );
 };
-  
+
 export default MainLayout;

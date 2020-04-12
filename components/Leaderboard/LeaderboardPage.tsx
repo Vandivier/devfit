@@ -27,11 +27,15 @@ export const LeaderboardPage: React.FC<LeaderboardPageProps> = ({ data }) => {
         <div>
             <h1 style={{ textAlign: 'center' }}>Leaderboard Page</h1>
 
-            { isAuthenticated ? 
-                <Button onClick={() => router.push('/feed')} fluid primary>Complete Your Next Challenge</Button>
-            :
-                <Button onClick={() => router.push('/register')} fluid primary>Get Started</Button>
-            }
+            {isAuthenticated ? (
+                <Button onClick={() => router.push('/feed')} fluid primary>
+                    Complete Your Next Challenge
+                </Button>
+            ) : (
+                <Button onClick={() => router.push('/register')} fluid primary>
+                    Get Started
+                </Button>
+            )}
 
             {!leaderboardItemsData && (
                 <div>
