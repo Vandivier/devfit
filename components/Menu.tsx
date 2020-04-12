@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import { useAuthenticated } from './useAuthenticated';
 
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 
 const menuStyles = {
     parentDiv: {
@@ -23,6 +23,14 @@ const menuStyles = {
         flex: 1,
         display: 'flex',
         justifyContent: 'flex-end'
+    },
+    LogoChildDiv: {
+        display: 'flex',
+        alignItems: 'center',
+        '&:hover': {
+            opacity: 0.7,
+            cursor: 'pointer'
+        }
     }
 }
 
@@ -36,7 +44,13 @@ export const Menu: React.FC<MenuProps> = () => {
     return (
         <div css={menuStyles.parentDiv}>
             <div css={menuStyles.LogoDiv}>
-                <p onClick={() => router.push('/')}>Dev Fit</p>
+                <div style={{ display: 'flex', height: '100%', alignItems: 'center' }}>
+                    <div css={menuStyles.LogoChildDiv} onClick={() => router.push('/')}>
+                        <Icon name='weight' size='large' style={{margin: 0}} />
+                        <h2 style={{margin: 0}}>DevFit</h2>
+                    </div>
+
+                </div>
             </div>
 
             {isAuthenticated ? <AuthenticatedMenu /> : <UnAuthenticatedMenu />}
