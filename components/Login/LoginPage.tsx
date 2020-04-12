@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/core';
 import React, { useState } from 'react';
 
 import { Container, Form, Button, Message } from 'semantic-ui-react';
-import { poster } from '../../lib/poster';
+import { poster } from '../../lib/request';
 import { useRouter } from 'next/router';
 
 type UserInput = {
