@@ -1,5 +1,5 @@
 const ALLOWED_TIMEOUT = 1000;
-const domain = process.env.NODE_ENV === 'production' ? 'https://devfit.now.sh/api' : 'http://localhost:8080/api';
+const domain = process.env.NODE_ENV === 'production' ? 'https://devfit.now.sh/api' : 'http://localhost:3000/api';
 const accessControlAllowOrigin = process.env.NODE_ENV === 'production' ? 'https://devfit.now.sh' : 'http://localhost:8080';
 
 export const poster = (route: string, body: any) =>
