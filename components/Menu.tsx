@@ -78,7 +78,8 @@ const AuthenticatedMenu: React.FC<AuthenticatedMenuProps> = () => {
 
     return (
         <div css={menuStyles.actionsDiv}>
-            <Button onClick={() => router.push('/logout')}>Sign Out</Button>
+            <Button basic onClick={() => router.push('/leaderboard')}>Leaderboard</Button>
+            <Button secondary onClick={() => router.push('/logout')}>Sign Out</Button>
         </div>
     );
 };

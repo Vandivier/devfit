@@ -3,6 +3,7 @@ import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 import { Post } from '@prisma/client';
 
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
+import { poster } from '../../lib/request';
 
 type FeedPageProps = {
     data: Post[];
@@ -23,6 +24,9 @@ type PostsFeedProps = {
 };
 
 const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
+
+    console.log(data);
+
     return (
         <Feed>
             {data.map((post: Post) => (
@@ -55,7 +59,7 @@ type UserInput = {
     exercise: number | undefined;
     reps: number | undefined;
     caption?: string;
-    proof?: string;
+    proof?: { type: string; link: string; };
 };
 
 const exerciseList = [
@@ -73,17 +77,25 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
         exercise: undefined,
         reps: undefined,
         caption: undefined,
-        proof: undefined,
+        proof: {
+            type: undefined,
+            link: undefined
+        },
     });
     const [buttonLoading, setButtonLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ErrorMessage | undefined>(undefined);
+
+    const exerciseMap = {};
+
+    for (const exercise of exerciseList) {
+        exerciseMap[exercise.id] = exercise.exercise
+    }
 
     const exerciseOptions = exerciseList.map((exercise, index: number) => ({ key: index, text: exercise.exercise, value: exercise.id }));
 
     const handleExerciseSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
         setButtonLoading(true);
-        console.log(userInput);
 
         if (!userInput.exercise) {
             setErrorMessage({
@@ -103,14 +115,33 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
             return setButtonLoading(false);
         }
 
-        setTimeout(() => {
-            setErrorMessage({
-                header: 'Great!',
-                content: 'Mock response here.',
-                info: true,
-            });
-            return setButtonLoading(false);
-        }, 1000);
+        const newChallengeSubmission = {
+            caption: userInput.caption,
+            videoUrl: userInput.proof.link,
+            createdAt: new Date(),
+            challenge: {
+                create: {
+                    basePointValue: userInput.exercise,
+                    maxPoints: userInput.exercise * 10,
+                    name: exerciseMap[userInput.exercise]
+                }
+            }
+        }
+    
+        poster('/post/create', {...newChallengeSubmission})
+        .then((x) => {
+            if (x.status === 200) {
+                setButtonLoading(false);
+                setModalOpen(false);
+            } else {
+                setButtonLoading(false);
+                setErrorMessage({
+                    header: 'Error!',
+                    content: 'something went wrong :(',
+                    warning: true,
+                });
+            } 
+        })
     };
 
     return (
@@ -151,7 +182,7 @@ const NewChallenge: React.FC<NewChallengeProps> = () => {
 
                         <Form.Field>
                             <label>Video/Image validation</label>
-                            <CloudinaryUpload onUpload={() => {}} />
+                            <CloudinaryUpload onUpload={(image) => setUserInput({...userInput, proof: {type: image.resource_type, link: image.url}})} />
                         </Form.Field>
 
                         <Button type="submit" fluid onClick={handleExerciseSubmit} loading={buttonLoading} disabled={buttonLoading}>
