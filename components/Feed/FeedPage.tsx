@@ -5,11 +5,8 @@ import { format } from 'date-fns';
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
 import { PostWithStuff } from '../../utils/PostWithStuff';
-<<<<<<< HEAD
 import { useGetter } from '../../real-components/useGetter';
-=======
 import { useRouter } from 'next/router';
->>>>>>> 6c718ca9189319b9f7814a9e27a8ee585e120960
 
 type FeedPageProps = {
     data: PostWithStuff[];
@@ -30,7 +27,6 @@ type PostsFeedProps = {
 };
 
 const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
-
     const router = useRouter();
 
     return (
