@@ -7,6 +7,7 @@
         "build": "next build",
         "start": "next start",
         "start-prod": "cross-env NODE_ENV=production next start",
+        "start-with-mock-prisma": "cross-env NODE_ENV=mock-prisma next start",
         "tc-dev": "nodemon server/index.js",
         "tc-start": "cross-env NODE_ENV=production node server/index.js",
         "db": "prisma studio --experimental",
