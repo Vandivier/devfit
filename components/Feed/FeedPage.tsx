@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 import { Post } from '@prisma/client';
+import { format } from 'date-fns';
 
 import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed, Segment } from 'semantic-ui-react';
 import { poster } from '../../lib/request';
@@ -34,15 +35,15 @@ const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
                     <Feed.Content>
                         <Feed.Summary>
                             Challenge completed: {post.challengeId}
-                            <Feed.Date>{post.createdAt}</Feed.Date>
+                            <Feed.Date>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</Feed.Date>
+                            {post.videoUrl && <Image src={post.videoUrl} size='small' /> }
                         </Feed.Summary>
 
-                        {post.videoUrl && (
+
+                        {post.caption && 
                             <Feed.Extra text>
-                                {post.videoUrl}
                                 {post.caption}
-                            </Feed.Extra>
-                        )}
+                            </Feed.Extra>}
 
                         <Feed.Meta>
                             {/* TODO: Replace with actual number of likes */}
