@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/core';
 import React, { useState } from 'react';
 import { createPrismaClient } from '../../utils/createPrismaClient';
 import { useGetter } from '../../real-components/useGetter';
-import { User, Post } from '@prisma/client';
+import { User, Post, UserGetPayload } from '@prisma/client';
 
 import { Card, Icon, Image, Feed, Segment, Modal, Message } from 'semantic-ui-react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
@@ -12,7 +12,7 @@ import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 type ProfilePageProps = {};
 
 export const ProfilePage: React.FC<ProfilePageProps> = () => {
-    const { data, loading } = useGetter<{ user: User & { points: number } }>('/me');
+    const { data, loading } = useGetter<{ user: UserGetPayload<{ include: { posts: true } }> & { points: number } }>('/me');
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ErrorMessage | undefined>(undefined);
 
@@ -67,7 +67,7 @@ export const ProfilePage: React.FC<ProfilePageProps> = () => {
                 </Card>
 
                 {/* TODO: Populate a list of their posts */}
-                <ProfilePosts posts={undefined} />
+                <ProfilePosts posts={data?.user.posts} />
             </Segment>
         </div>
     );
