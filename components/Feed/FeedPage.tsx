@@ -2,23 +2,55 @@ import React, { useState } from 'react';
 import { CloudinaryUpload } from '../../real-components/CloudinaryUpload';
 import { Post } from '@prisma/client';
 
-import { Button, Header, Image, Modal, Form, Dropdown, Message } from 'semantic-ui-react';
+import { Button, Header, Image, Modal, Form, Dropdown, Message, Feed } from 'semantic-ui-react';
 
 type FeedPageProps = {
     data: Post[];
 };
 
 export const FeedPage: React.FC<FeedPageProps> = ({ data }) => {
-
-    console.log(data);
-
     return (
         <div>
             <h1>Feed Page</h1>
             <NewChallenge />
+            
+            <PostsFeed data={data} />
         </div>
     );
 };
+
+type PostsFeedProps = {
+    data: Post[];
+}
+
+const PostsFeed: React.FC<PostsFeedProps> = ({ data }) => {
+    return (
+        <Feed>
+            {data.map((post: Post) => (
+                <Feed.Event key={post.id}>
+                    <Feed.Content>
+                        <Feed.Summary>
+                            Challenge completed: {post.challengeId}
+                            <Feed.Date>{post.createdAt}</Feed.Date>
+                        </Feed.Summary>
+                        
+                        {post.videoUrl &&
+                            <Feed.Extra text>
+                                {post.videoUrl}
+                                {post.caption}
+                            </Feed.Extra>
+                        }
+
+                        <Feed.Meta>
+                            {/* TODO: Replace with actual number of likes */}
+                            14 likes
+                        </Feed.Meta>
+                    </Feed.Content>
+                </Feed.Event>
+            ))}
+        </Feed>  
+    );
+}
 
 type UserInput = {
     exercise: number | undefined;
