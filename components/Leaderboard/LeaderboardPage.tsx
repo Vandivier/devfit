@@ -1,6 +1,4 @@
 import React, { Fragment, useState, useEffect } from 'react';
-
-import { leaderboardItems, LeaderboardItem } from '../MockData';
 import { Container, Loader, Feed } from 'semantic-ui-react';
 
 export type UserPoints = {

@@ -1,6 +1,4 @@
-import { NextPage } from 'next';
 import MainLayout from '../components/MainLayout';
-import { FeedPage } from '../components/Feed/FeedPage';
 import { createPrismaClient } from '../utils/createPrismaClient';
 import { Post } from '@prisma/client';
 

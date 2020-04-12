@@ -1,15 +1,17 @@
 import { NextPage } from 'next';
 import MainLayout from '../components/MainLayout';
-import { HomePage } from '../components/Home/HomePage';
-import { LeaderboardPage } from '../components/Leaderboard/LeaderboardPage';
+import { LeaderboardPage, UserPoints } from '../components/Leaderboard/LeaderboardPage';
+import { loadFeed } from '../utils/loadFeed';
 
-type HomeProps = {};
+export function getStaticProps() {
+    return loadFeed();
+}
 
-const Home: NextPage<HomeProps> = () => (
-  <MainLayout>
-    {/* <HomePage /> */}
-    <LeaderboardPage />
-  </MainLayout>
+const Home = ({ data }: { data: UserPoints[] }) => (
+    <MainLayout>
+        {/* <HomePage /> */}
+        <LeaderboardPage data={data} />
+    </MainLayout>
 );
 
 export default Home;
