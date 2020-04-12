@@ -1,13 +1,24 @@
 import { NextPage } from 'next';
 import MainLayout from '../components/MainLayout';
 import { FeedPage } from '../components/Feed/FeedPage';
+import { createPrismaClient } from '../utils/createPrismaClient';
+import { Post } from '@prisma/client';
 
-type FeedProps = {};
+export async function getStaticProps() {
+    const prisma = createPrismaClient();
+    const data = await prisma.post.findMany({ first: 20 });
 
-const Feed: NextPage<FeedProps> = () => (
-  <MainLayout>
-    <FeedPage />
-  </MainLayout>
+    return {
+        props: {
+            data: data.map((x) => ({ ...x, createdAt: x.createdAt.toString() })),
+        },
+    };
+}
+
+const Feed = ({ data }: { data: Post[] }) => (
+    <MainLayout>
+        <div>{JSON.stringify(data)}</div>
+    </MainLayout>
 );
 
 export default Feed;
